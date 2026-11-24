@@ -18,7 +18,7 @@ import logging
 from collections.abc import Callable
 from typing import Any, TypeVar
 
-from telegram import Update
+from telegram import LinkPreviewOptions, Update
 from telegram.ext import ContextTypes
 
 from switchboard.core.crypto import CryptoError
@@ -151,7 +151,7 @@ async def connect(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "Open this link to connect your Gmail account. It works for 10 minutes and one use.\n\n"
         f"{url}\n\n"
         "Switchboard asks to read and archive mail. It cannot send mail.",
-        disable_web_page_preview=True,
+        link_preview_options=LinkPreviewOptions(is_disabled=True),
     )
 
 
