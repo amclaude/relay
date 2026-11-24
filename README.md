@@ -1,6 +1,6 @@
-# Switchboard
+# Relay
 
-Switchboard is a multi-user Telegram bot. Any Telegram user can start a private session and connect their own Gmail account. Gmail is the first feature. More features can be added as new folders.
+Relay is a multi-user Telegram bot. Any Telegram user can start a private session and connect their own Gmail account. Gmail is the first feature. More features can be added as new folders.
 
 The bot can read and archive mail. It cannot send mail.
 
@@ -14,26 +14,26 @@ This is a portfolio demo. Google apps in Testing mode issue refresh tokens that 
        | commands (long polling)            | Google consent screen
        v                                    v
 +---------------------------------------------------------------+
-|  python -m switchboard   (one process, one event loop)        |
+|  python -m relay         (one process, one event loop)        |
 |                                                               |
 |  +--------------------+          +-------------------------+  |
 |  | Telegram bot       |          | FastAPI (uvicorn)       |  |
 |  | python-telegram-bot|          | 127.0.0.1:8742          |  |
 |  |                    |          |  GET /health            |  |
-|  |  switchboard/      |          |  GET /oauth/google/     |  |
+|  |  relay/            |          |  GET /oauth/google/     |  |
 |  |   features/gmail/  |          |      callback           |  |
 |  +---------+----------+          +------------+------------+  |
 |            |                                  |               |
 |            +---------------+------------------+               |
 |                            v                                  |
-|          switchboard/core: config, crypto (Fernet),          |
+|          relay/core: config, crypto (Fernet),                 |
 |          sessions (OAuth state), db (SQLite)                  |
 +---------------------------------------------------------------+
                              ^
                              | http://localhost:8742
                    Cloudflare tunnel
                              ^
-                             | https://switchboard.crawlshift.dev
+                             | https://relay.crawlshift.dev
                          Google redirect
 ```
 
@@ -48,7 +48,7 @@ This is a portfolio demo. Google apps in Testing mode issue refresh tokens that 
 ### Layout
 
 ```
-switchboard/
+relay/
   __main__.py        entry point: bot + web server
   core/              config, crypto, db, sessions, services, telegram_app
   web/               FastAPI app: OAuth callback and health route
@@ -59,7 +59,7 @@ scripts/
 tests/               pytest suite, all external calls mocked
 ```
 
-A feature is a folder in `switchboard/features/`. Its `__init__.py` defines `FEATURE_NAME`, `COMMAND_HELP` and `register(application)`. Core finds it at start-up. No change in core is needed.
+A feature is a folder in `relay/features/`. Its `__init__.py` defines `FEATURE_NAME`, `COMMAND_HELP` and `register(application)`. Core finds it at start-up. No change in core is needed.
 
 ## Commands
 
@@ -98,7 +98,7 @@ Requires Python 3.11 or newer.
 7. Add this exact **Authorized redirect URI**:
 
    ```
-   https://switchboard.crawlshift.dev/oauth/google/callback
+   https://relay.crawlshift.dev/oauth/google/callback
    ```
 
 8. Copy the client ID and client secret.
@@ -118,21 +118,21 @@ Paste the printed key into `FERNET_KEY` in `.env`. Fill in the other values.
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID | required |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | required |
 | `FERNET_KEY` | Key that encrypts refresh tokens | required |
-| `PUBLIC_BASE_URL` | Public HTTPS base URL | `https://switchboard.crawlshift.dev` |
+| `PUBLIC_BASE_URL` | Public HTTPS base URL | `https://relay.crawlshift.dev` |
 | `PORT` | Local port for FastAPI | `8742` |
 
 Keep `.env` and the key secret. If you lose the key, stored tokens cannot be decrypted. Users must connect again.
 
 ### 4. Cloudflare tunnel
 
-Map `https://switchboard.crawlshift.dev` to `http://localhost:8742`. FastAPI binds to `127.0.0.1` only. The tunnel is the only way in from the internet.
+Map `https://relay.crawlshift.dev` to `http://localhost:8742`. FastAPI binds to `127.0.0.1` only. The tunnel is the only way in from the internet.
 
 ### 5. Install and run
 
 ```
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
-.venv/bin/python -m switchboard
+.venv/bin/python -m relay
 ```
 
 The bot starts long polling and the web server starts on `127.0.0.1:8742`.

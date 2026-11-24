@@ -1,6 +1,6 @@
 """Per-user sessions and OAuth state handling.
 
-A "session" in Switchboard is the row for a Telegram user in the `users`
+A "session" in Relay is the row for a Telegram user in the `users`
 table. It is created the first time the user talks to the bot.
 
 The OAuth `state` value links a Google consent screen back to the Telegram
@@ -16,7 +16,7 @@ from __future__ import annotations
 import secrets
 from datetime import datetime, timedelta
 
-from switchboard.core.db import Database, User, utcnow
+from relay.core.db import Database, User, utcnow
 
 STATE_TTL = timedelta(minutes=10)
 

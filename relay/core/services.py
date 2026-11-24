@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from switchboard.core.config import Settings
-from switchboard.core.crypto import TokenCipher
-from switchboard.core.db import Database
+from relay.core.config import Settings
+from relay.core.crypto import TokenCipher
+from relay.core.db import Database
 
 
 @dataclass(frozen=True)

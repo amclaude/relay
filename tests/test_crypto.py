@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from cryptography.fernet import Fernet
 
-from switchboard.core.crypto import CryptoError, TokenCipher
+from relay.core.crypto import CryptoError, TokenCipher
 
 
 def _key() -> str:

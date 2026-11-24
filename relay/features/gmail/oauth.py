@@ -16,7 +16,7 @@ from typing import Any
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 
-from switchboard.core.config import GOOGLE_SCOPES, Settings
+from relay.core.config import GOOGLE_SCOPES, Settings
 
 AUTH_URI = "https://accounts.google.com/o/oauth2/auth"
 TOKEN_URI = "https://oauth2.googleapis.com/token"

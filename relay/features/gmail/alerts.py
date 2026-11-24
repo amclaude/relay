@@ -16,10 +16,10 @@ from datetime import datetime
 
 from telegram.ext import ContextTypes
 
-from switchboard.core.crypto import CryptoError
-from switchboard.core.db import GmailAccount, utcnow
-from switchboard.core.telegram_app import get_services
-from switchboard.features.gmail.client import GmailAuthError, GmailClient, GmailError, MessageSummary
+from relay.core.crypto import CryptoError
+from relay.core.db import GmailAccount, utcnow
+from relay.core.telegram_app import get_services
+from relay.features.gmail.client import GmailAuthError, GmailClient, GmailError, MessageSummary
 
 log = logging.getLogger(__name__)
 

@@ -10,8 +10,8 @@ from __future__ import annotations
 import pytest
 from cryptography.fernet import Fernet
 
-from switchboard.core.config import Settings
-from switchboard.core.services import Services, build_services
+from relay.core.config import Settings
+from relay.core.services import Services, build_services
 
 
 @pytest.fixture

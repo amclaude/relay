@@ -21,17 +21,17 @@ from typing import Any, TypeVar
 from telegram import LinkPreviewOptions, Update
 from telegram.ext import ContextTypes
 
-from switchboard.core.crypto import CryptoError
-from switchboard.core.sessions import create_oauth_state, get_or_create_session
-from switchboard.core.telegram_app import get_services
-from switchboard.features.gmail.client import (
+from relay.core.crypto import CryptoError
+from relay.core.sessions import create_oauth_state, get_or_create_session
+from relay.core.telegram_app import get_services
+from relay.features.gmail.client import (
     GmailAuthError,
     GmailClient,
     GmailError,
     MessageSummary,
     revoke_token,
 )
-from switchboard.features.gmail.oauth import build_consent_url
+from relay.features.gmail.oauth import build_consent_url
 
 log = logging.getLogger(__name__)
 
@@ -150,7 +150,7 @@ async def connect(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.effective_message.reply_text(
         "Open this link to connect your Gmail account. It works for 10 minutes and one use.\n\n"
         f"{url}\n\n"
-        "Switchboard asks to read and archive mail. It cannot send mail.",
+        "Relay asks to read and archive mail. It cannot send mail.",
         link_preview_options=LinkPreviewOptions(is_disabled=True),
     )
 
@@ -253,7 +253,7 @@ async def alerts(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
     if choice == "on":
         await update.effective_message.reply_text(
-            "Alerts are on. Switchboard checks for new mail every 5 minutes."
+            "Alerts are on. Relay checks for new mail every 5 minutes."
         )
     else:
         await update.effective_message.reply_text("Alerts are off.")

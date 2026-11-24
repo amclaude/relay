@@ -12,7 +12,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-DEFAULT_PUBLIC_BASE_URL = "https://switchboard.crawlshift.dev"
+DEFAULT_PUBLIC_BASE_URL = "https://relay.crawlshift.dev"
 DEFAULT_PORT = 8742
 
 # The web server only listens on the loopback interface.
@@ -30,7 +30,7 @@ GOOGLE_SCOPES = [
 ]
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "switchboard.db"
+DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "relay.db"
 
 
 class ConfigError(Exception):

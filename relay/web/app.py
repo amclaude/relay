@@ -22,10 +22,10 @@ from collections.abc import Awaitable, Callable
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from switchboard.core.config import OAUTH_CALLBACK_PATH
-from switchboard.core.services import Services
-from switchboard.core.sessions import OAuthStateError, consume_oauth_state
-from switchboard.features.gmail.oauth import OAuthExchangeError, exchange_code
+from relay.core.config import OAUTH_CALLBACK_PATH
+from relay.core.services import Services
+from relay.core.sessions import OAuthStateError, consume_oauth_state
+from relay.features.gmail.oauth import OAuthExchangeError, exchange_code
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ async def _safe_notify(notify: Notifier, telegram_id: int, text: str) -> None:
 
 def create_app(services: Services, notify: Notifier) -> FastAPI:
     """Build the FastAPI app."""
-    app = FastAPI(title="Switchboard", docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Relay", docs_url=None, redoc_url=None, openapi_url=None)
 
     @app.get("/health")
     async def health() -> dict[str, str]:

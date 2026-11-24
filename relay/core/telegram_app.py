@@ -1,6 +1,6 @@
 """Telegram application setup and feature discovery.
 
-A feature is a sub-package of `switchboard.features`. Each feature module
+A feature is a sub-package of `relay.features`. Each feature module
 can define these names in its `__init__.py`:
 
     FEATURE_NAME   str. Shown in logs.
@@ -21,9 +21,9 @@ from types import ModuleType
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-import switchboard.features as features_pkg
-from switchboard.core.services import Services
-from switchboard.core.sessions import get_or_create_session
+import relay.features as features_pkg
+from relay.core.services import Services
+from relay.core.sessions import get_or_create_session
 
 log = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ def get_services(context: ContextTypes.DEFAULT_TYPE) -> Services:
 
 
 def discover_features() -> list[ModuleType]:
-    """Import every sub-package of switchboard.features."""
+    """Import every sub-package of relay.features."""
     modules: list[ModuleType] = []
     for info in pkgutil.iter_modules(features_pkg.__path__):
         if info.ispkg:
@@ -77,7 +77,7 @@ def build_application(services: Services) -> Application:
 
         await asyncio.to_thread(get_or_create_session, db, user.id)
         await update.effective_message.reply_text(
-            "Welcome to Switchboard.\n"
+            "Welcome to Relay.\n"
             "Each user has a private session. Your data is never shared.\n\n"
             "Run /connect to link your Gmail account. Run /help for all commands."
         )

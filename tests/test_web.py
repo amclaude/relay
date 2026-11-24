@@ -11,12 +11,12 @@ from datetime import timedelta
 import pytest
 from fastapi.testclient import TestClient
 
-from switchboard.core.config import OAUTH_CALLBACK_PATH
-from switchboard.core.db import utcnow
-from switchboard.core.sessions import create_oauth_state
-from switchboard.features.gmail.oauth import GoogleConnection, OAuthExchangeError
-from switchboard.web import app as web_app
-from switchboard.web.app import create_app
+from relay.core.config import OAUTH_CALLBACK_PATH
+from relay.core.db import utcnow
+from relay.core.sessions import create_oauth_state
+from relay.features.gmail.oauth import GoogleConnection, OAuthExchangeError
+from relay.web import app as web_app
+from relay.web.app import create_app
 
 
 @pytest.fixture

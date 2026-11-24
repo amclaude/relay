@@ -1,15 +1,15 @@
 """Gmail feature: connect an account, read mail, archive, and get alerts.
 
 This package follows the feature contract described in
-`switchboard/core/telegram_app.py`. Core finds it by scanning
-`switchboard.features` and calls `register(application)`.
+`relay/core/telegram_app.py`. Core finds it by scanning
+`relay.features` and calls `register(application)`.
 """
 
 from __future__ import annotations
 
 from telegram.ext import Application, CommandHandler
 
-from switchboard.features.gmail import alerts, commands
+from relay.features.gmail import alerts, commands
 
 FEATURE_NAME = "Gmail"
 

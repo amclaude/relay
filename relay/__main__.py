@@ -1,4 +1,4 @@
-"""Entry point. Run with: python -m switchboard
+"""Entry point. Run with: python -m relay
 
 One process runs two things on one asyncio event loop:
 
@@ -16,13 +16,13 @@ import sys
 
 import uvicorn
 
-from switchboard.core.config import ConfigError, load_settings
-from switchboard.core.crypto import CryptoError
-from switchboard.core.services import build_services
-from switchboard.core.telegram_app import build_application
-from switchboard.web.app import create_app
+from relay.core.config import ConfigError, load_settings
+from relay.core.crypto import CryptoError
+from relay.core.services import build_services
+from relay.core.telegram_app import build_application
+from relay.web.app import create_app
 
-log = logging.getLogger("switchboard")
+log = logging.getLogger("relay")
 
 
 def _setup_logging() -> None:

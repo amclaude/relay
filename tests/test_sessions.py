@@ -6,8 +6,8 @@ from datetime import timedelta
 
 import pytest
 
-from switchboard.core.db import utcnow
-from switchboard.core.sessions import (
+from relay.core.db import utcnow
+from relay.core.sessions import (
     STATE_TTL,
     ExpiredStateError,
     UnknownStateError,

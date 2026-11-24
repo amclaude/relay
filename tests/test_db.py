@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from switchboard.core.db import Database, utcnow
+from relay.core.db import Database, utcnow
 
 
 def test_ensure_user_is_idempotent(services):

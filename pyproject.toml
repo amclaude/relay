@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "switchboard"
+name = "relay"
 version = "0.1.0"
 description = "Multi-user Telegram bot where each user connects their own Gmail account."
 readme = "README.md"
@@ -28,7 +28,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["switchboard*"]
+include = ["relay*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
