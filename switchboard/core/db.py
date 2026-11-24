@@ -24,6 +24,7 @@ from sqlalchemy import (
     ForeignKey,
     String,
     Text,
+    TypeDecorator,
     create_engine,
     event,
     select,
@@ -44,6 +45,25 @@ def _aware(value: datetime | None) -> datetime | None:
     return value
 
 
+class UTCDateTime(TypeDecorator):
+    """A DateTime column that always returns timezone-aware UTC values.
+
+    SQLite stores no time zone. Without this, values read back are naive,
+    and `.timestamp()` on a naive value would use the server's local zone.
+    """
+
+    impl = DateTime(timezone=True)
+    cache_ok = True
+
+    def process_bind_param(self, value: datetime | None, dialect: Any) -> datetime | None:
+        if value is not None and value.tzinfo is not None:
+            return value.astimezone(timezone.utc)
+        return value
+
+    def process_result_value(self, value: datetime | None, dialect: Any) -> datetime | None:
+        return _aware(value)
+
+
 class Base(DeclarativeBase):
     pass
 
@@ -52,7 +72,7 @@ class User(Base):
     __tablename__ = "users"
 
     telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime(), default=utcnow)
     # JSON text. Holds per-user settings that are not tied to one feature.
     settings: Mapped[str] = mapped_column(Text, default="{}")
 
@@ -66,7 +86,7 @@ class GmailAccount(Base):
     email: Mapped[str] = mapped_column(String(320))
     # Fernet ciphertext. The plain refresh token is never stored.
     encrypted_refresh_token: Mapped[str] = mapped_column(Text)
-    last_checked: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_checked: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
     alerts_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
     # JSON text. Example: {"query": "is:unread category:primary"}
     filters: Mapped[str] = mapped_column(Text, default="{}")
@@ -77,7 +97,7 @@ class OAuthState(Base):
 
     state: Mapped[str] = mapped_column(String(128), primary_key=True)
     telegram_id: Mapped[int] = mapped_column(BigInteger)
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    expires_at: Mapped[datetime] = mapped_column(UTCDateTime())
 
 
 class Database:
