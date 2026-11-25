@@ -6,6 +6,75 @@ The bot can read and archive mail. It cannot send mail.
 
 This is a portfolio demo. Google apps in Testing mode issue refresh tokens that expire after 7 days. After that, users run `/connect` again.
 
+**Live demo:** https://t.me/RelayDemoBot
+
+> **Disclaimer:** This is a demo that runs in Google OAuth Testing mode. It only accepts Google accounts that are registered as test users. Anyone else is blocked at Google's consent screen and cannot connect Gmail. Anyone can open the bot and run `/start`. To connect Gmail, the owner must first add your email address as a test user. If you want to try it, message claude@crawlshift.dev with the Gmail address you want to use.
+
+## Usage
+
+1. Open the bot at https://t.me/RelayDemoBot.
+2. Send `/start`. This creates your session and shows a welcome.
+3. Send `/connect`. The bot replies with a Google link. Tap the link and approve access. The link works for 10 minutes and for one use. The bot messages you when Gmail is connected.
+4. Use the commands below.
+
+The scope is `gmail.modify`. The bot can read and archive mail. It cannot send mail.
+
+`<n>` in `/read` and `/archive` is the number of a message in the most recent `/unread` or `/search` listing. Each new listing replaces the old one.
+
+If you run a Gmail command before you connect, the bot replies: `No Gmail account is connected. Run /connect first.`
+
+### `/help`
+
+Lists all commands.
+
+### `/unread`
+
+Shows the last 10 unread messages as a numbered list. Each entry has the subject, the sender and a short snippet. If there is none, the bot replies `No unread mail.`
+
+```
+/unread
+```
+
+### `/search <query>`
+
+Searches Gmail. The query uses Gmail search syntax. The bot shows up to 10 matches as a numbered list. If nothing matches, the bot replies `No messages found.`
+
+```
+/search from:amazon newer_than:7d
+```
+
+### `/read <n>`
+
+Shows message number `n` from the last list. The reply has the subject, sender, date and the plain text body. Long messages are cut and end with `[truncated]`.
+
+```
+/read 2
+```
+
+### `/archive <n>`
+
+Removes message number `n` from the inbox. The bot replies `Archived.`
+
+```
+/archive 2
+```
+
+### `/alerts on|off`
+
+Turns new-mail alerts on or off. The bot checks for new mail every 5 minutes while alerts are on.
+
+```
+/alerts on
+```
+
+### `/disconnect`
+
+Revokes the Google token and deletes all stored data for your account. If Google does not confirm the revoke, the bot tells you to remove access at myaccount.google.com/permissions.
+
+### Expired access
+
+If the Google token has expired or was revoked, the bot tells you to run `/connect` again.
+
 ## Architecture
 
 ```
@@ -61,22 +130,6 @@ tests/               pytest suite, all external calls mocked
 
 A feature is a folder in `relay/features/`. Its `__init__.py` defines `FEATURE_NAME`, `COMMAND_HELP` and `register(application)`. Core finds it at start-up. No change in core is needed.
 
-## Commands
-
-| Command | What it does |
-| --- | --- |
-| `/start` | Create your session and show a welcome |
-| `/help` | List all commands |
-| `/connect` | Get a link to connect your Gmail account |
-| `/disconnect` | Revoke the Google token and delete all stored data |
-| `/unread` | Show the last 10 unread messages |
-| `/search <query>` | Search Gmail. Example: `/search from:alice has:attachment` |
-| `/read <n>` | Read message number `n` from the last list |
-| `/archive <n>` | Archive message number `n` from the last list |
-| `/alerts on\|off` | Turn new-mail alerts on or off (checked every 5 minutes) |
-
-If the Google token has expired or was revoked, the bot tells the user to run `/connect` again.
-
 ## Setup
 
 Requires Python 3.11 or newer.
@@ -127,7 +180,7 @@ Keep `.env` and the key secret. If you lose the key, stored tokens cannot be dec
 
 Map `https://relay.crawlshift.dev` to `http://localhost:8742`. FastAPI binds to `127.0.0.1` only. The tunnel is the only way in from the internet.
 
-### 5. Install and run
+## Running
 
 ```
 python3 -m venv .venv
